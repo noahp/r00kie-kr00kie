@@ -328,6 +328,7 @@ class Kr00k:
         """
         try:
             assert packet.haslayer(Dot11CCMP), 'Is not 802.11 CCMP packet'
+            print("got pkt")
             wrpcap(self.pcap_path_test, packet, append=True)
             pn0 = "{:02x}".format(packet.PN0)
             pn1 = "{:02x}".format(packet.PN1)
@@ -519,9 +520,9 @@ if __name__ == '__main__':
             interface_mode: str = interface_mode.stdout.decode('utf-8')
             if 'Mode:Monitor' not in interface_mode:
                 kr00k.print_info('Set monitor mode on wireless interface: ', args.interface)
-                run(['ifconfig ' + args.interface + ' down'], shell=True, stdout=PIPE)
+                run(['ip link set ' + args.interface + ' down'], shell=True, stdout=PIPE)
                 run(['iwconfig ' + args.interface + ' mode monitor'], shell=True, stdout=PIPE)
-                run(['ifconfig ' + args.interface + ' up'], shell=True, stdout=PIPE)
+                run(['ip link set ' + args.interface + ' up'], shell=True, stdout=PIPE)
             else:
                 kr00k.print_info('Wireless interface: ', args.interface, ' already in mode monitor')
 
